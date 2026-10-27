@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="依楊梅高中圖書館 1F／2F 空間配置圖重建的 3D 互動探索島，整合新生圖書館利用教育。" />
+    <title>楊梅高中圖書館 3D 互動探索島</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="topbar">
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">📚</span>
+          <h1 data-i18n="title">楊梅高中圖書館 3D 互動探索島</h1>
+          <span class="ver">V2.0</span>
+        </div>
+        <nav id="mode-tabs" aria-label="觀看模式">
+          <button data-mode="full" data-i18n="mode.full">完整建築</button>
+          <button data-mode="explode" data-i18n="mode.explode">樓層展開</button>
+          <button data-mode="f1" data-i18n="mode.f1">一樓俯視</button>
+          <button data-mode="f2" data-i18n="mode.f2">二樓俯視</button>
+          <button data-mode="interior" data-i18n="mode.interior">室內探索</button>
+          <button data-mode="compare" data-i18n="mode.compare">2D／3D 對照</button>
+          <button data-mode="validate" data-i18n="mode.validate">配置驗證</button>
+        </nav>
+        <div class="top-actions">
+          <button class="pill" data-open="learn"><span aria-hidden="true">🎓</span> <span data-i18n="learn">學習中心</span></button>
+          <button class="pill" data-open="quest"><span aria-hidden="true">🗺️</span> <span data-i18n="quest">探險任務</span></button>
+          <button class="pill" data-open="record"><span aria-hidden="true">📒</span> <span data-i18n="record">學習歷程</span></button>
+          <button class="pill icon-only" data-open="settings" data-i18n-title="settings" title="設定"><span aria-hidden="true">⚙️</span></button>
+        </div>
+      </header>
+
+      <div id="body">
+        <aside id="sidebar" aria-label="樓層與空間目錄">
+          <div class="side-head">
+            <div class="floor-switch" role="group" aria-label="樓層">
+              <button data-floor="all" data-i18n="floorAll">全部</button>
+              <button data-floor="1">1F</button>
+              <button data-floor="2">2F</button>
+            </div>
+            <div class="search-box">
+              <input id="zone-search" type="search" data-i18n-placeholder="search" placeholder="搜尋空間…" autocomplete="off" />
+            </div>
+          </div>
+          <div id="zone-list"></div>
+          <p class="side-note" id="disclaimer"></p>
+        </aside>
+
+        <main id="stage">
+          <section id="compare-pane" hidden>
+            <div class="compare-head">
+              <strong id="compare-title">1F 原始平面配置圖</strong>
+              <span class="hint">點擊平面圖中的區域，3D 同步高亮</span>
+            </div>
+            <div class="plan-wrap" id="plan-wrap">
+              <img id="plan-img" alt="圖書館平面配置圖" />
+              <svg id="plan-svg" viewBox="0 0 2000 1125" preserveAspectRatio="none"></svg>
+            </div>
+          </section>
+          <section id="viewport">
+            <div id="canvas-host"></div>
+            <div id="hud-top">
+              <div id="mode-badge"></div>
+              <div id="explode-ctrl" hidden>
+                <label><span data-i18n="explode">分離距離</span> <input id="explode-range" type="range" min="2" max="16" step="0.5" /></label>
+              </div>
+            </div>
+            <div id="task-hud" hidden></div>
+            <div id="hover-tip" hidden></div>
+            <div id="validate-panel" hidden></div>
+            <button id="sidebar-toggle" class="fab" aria-label="空間目錄">☰</button>
+            <div id="loading">3D 圖書館建置中…</div>
+          </section>
+        </main>
+
+        <aside id="infocard" aria-live="polite">
+          <button class="card-close" id="card-close" aria-label="關閉資訊卡">✕</button>
+          <div id="card-body"></div>
+        </aside>
+      </div>
+
+      <footer id="toolbar" aria-label="操作工具列">
+        <button data-act="home"><span>🏠</span><em data-i18n="home">返回全景</em></button>
+        <button data-act="bird"><span>🦅</span><em data-i18n="bird">鳥瞰</em></button>
+        <button data-act="rotate" aria-pressed="false"><span>🔄</span><em data-i18n="rotate">自動旋轉</em></button>
+        <button data-act="night" aria-pressed="false"><span>🌙</span><em data-i18n="day">日夜</em></button>
+        <button data-act="labels" aria-pressed="true"><span>🏷️</span><em data-i18n="labels">標籤</em></button>
+        <button data-act="tour" aria-pressed="false"><span>🧭</span><em data-i18n="tour">自動導覽</em></button>
+        <button data-act="voice" aria-pressed="false"><span>🔊</span><em data-i18n="voice">語音</em></button>
+        <button data-act="speed"><span>⏩</span><em><span data-i18n="speed">速度</span> <b id="speed-val">1×</b></em></button>
+        <button data-act="saver" aria-pressed="false"><span>🔋</span><em data-i18n="saver">省電</em></button>
+        <button data-act="fullscreen" aria-pressed="false"><span>⛶</span><em data-i18n="fullscreen">全螢幕</em></button>
+      </footer>
+    </div>
+
+    <div id="modal" class="modal" hidden>
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <header class="modal-head">
+          <h2 id="modal-title"></h2>
+          <button class="modal-close" aria-label="關閉">✕</button>
+        </header>
+        <div class="modal-content" id="modal-content"></div>
+      </div>
+    </div>
+    <div id="toast-root" aria-live="assertive"></div>
+    <div id="print-root"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
